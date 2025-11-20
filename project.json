@@ -1,0 +1,44 @@
+{
+  "name": "小哈电池Widget",
+  "description": "iOS版小哈共享充电宝电池监控小部件",
+  "version": "1.0.0",
+  "author": "Battery Widget Team",
+  "license": "MIT",
+  "platforms": {
+    "iOS": "16.0"
+  },
+  "project_structure": {
+    "Main App": [
+      "BatteryWidget.swift - 主应用UI (ContentView + ConfigurationView)",
+      "BatteryWidgetViewModel.swift - 业务逻辑与状态管理",
+      "BatteryNetworkService.swift - 网络请求服务"
+    ],
+    "Widget Extension": [
+      "BatteryWidgetSmall.swift - 小组件实现 (小屏幕和大屏幕)"
+    ]
+  },
+  "key_features": {
+    "1_real_time_battery_monitoring": "实时显示电池电量百分比和更新时间",
+    "2_beautiful_ui": "精美的环形进度条界面，支持浅色/深色主题",
+    "3_lock_screen_widget": "iOS 16+ 支持锁屏小组件",
+    "4_home_screen_widget": "主屏幕小组件 (小、中、大尺寸)",
+    "5_configuration_interface": "简洁的配置界面，支持Token和电池编号设置",
+    "6_api_testing": "详细的API连接测试功能，显示完整日志",
+    "7_secure_storage": "使用Keychain安全存储敏感信息",
+    "8_auto_refresh": "自动定时刷新电池数据"
+  },
+  "api_flow": {
+    "step_1": "获取预处理参数 POST /preparams?batteryNo=xxx",
+    "step_2": "获取加密电池数据 POST {dynamic_url} with headers",
+    "step_3": "解码电池数据 POST /decode"
+  },
+  "build_requirements": {
+    "xcode_version": "14.0+",
+    "ios_target": "16.0+",
+    "swift_version": "5.7+"
+  },
+  "dependencies": {
+    "combine": "Built-in",
+    "swiftui": "Built-in"
+  }
+}
