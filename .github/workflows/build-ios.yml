@@ -136,81 +136,76 @@ jobs:
         fi
 
     - name: 📄 生成导出配置
+      env:
+        BUILD_TYPE: ${{ github.event.inputs.build_type || 'app-store' }}
       run: |
         cd iOS
         
-        BUILD_TYPE="${{ github.event.inputs.build_type || 'app-store' }}"
+        if [ "$BUILD_TYPE" = "ad-hoc" ]; then
+          cat > exportOptions.plist <<'PLIST'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>method</key>
+<string>ad-hoc</string>
+<key>signingStyle</key>
+<string>automatic</string>
+<key>stripSwiftSymbols</key>
+<true/>
+</dict>
+</plist>
+PLIST
+        elif [ "$BUILD_TYPE" = "enterprise" ]; then
+          cat > exportOptions.plist <<'PLIST'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>method</key>
+<string>enterprise</string>
+<key>signingStyle</key>
+<string>automatic</string>
+<key>stripSwiftSymbols</key>
+<true/>
+</dict>
+</plist>
+PLIST
+        elif [ "$BUILD_TYPE" = "development" ]; then
+          cat > exportOptions.plist <<'PLIST'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>method</key>
+<string>development</string>
+<key>signingStyle</key>
+<string>automatic</string>
+</dict>
+</plist>
+PLIST
+        else
+          cat > exportOptions.plist <<'PLIST'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>method</key>
+<string>app-store</string>
+<key>signingStyle</key>
+<string>automatic</string>
+<key>uploadBitcode</key>
+<false/>
+<key>uploadSymbols</key>
+<true/>
+<key>stripSwiftSymbols</key>
+<true/>
+</dict>
+</plist>
+PLIST
+        fi
         
-        case $BUILD_TYPE in
-          ad-hoc)
-            cat > exportOptions.plist << 'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>method</key>
-    <string>ad-hoc</string>
-    <key>signingStyle</key>
-    <string>automatic</string>
-    <key>stripSwiftSymbols</key>
-    <true/>
-</dict>
-</plist>
-EOF
-            ;;
-          enterprise)
-            cat > exportOptions.plist << 'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>method</key>
-    <string>enterprise</string>
-    <key>signingStyle</key>
-    <string>automatic</string>
-    <key>stripSwiftSymbols</key>
-    <true/>
-</dict>
-</plist>
-EOF
-            ;;
-          development)
-            cat > exportOptions.plist << 'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>method</key>
-    <string>development</string>
-    <key>signingStyle</key>
-    <string>automatic</string>
-</dict>
-</plist>
-EOF
-            ;;
-          *)
-            cat > exportOptions.plist << 'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>method</key>
-    <string>app-store</string>
-    <key>signingStyle</key>
-    <string>automatic</string>
-    <key>uploadBitcode</key>
-    <false/>
-    <key>uploadSymbols</key>
-    <true/>
-    <key>stripSwiftSymbols</key>
-    <true/>
-</dict>
-</plist>
-EOF
-            ;;
-        esac
-        
-        echo "✓ 导出配置已生成"
+        echo "✓ 导出配置已生成 (BUILD_TYPE=$BUILD_TYPE)"
 
     - name: 📤 导出 IPA
       run: |
