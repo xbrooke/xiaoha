@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>小哈电池 API 中转服务</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 50px auto; 
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 { color: #667eea; }
+        .api { 
+            background: #f5f5f5; 
+            padding: 15px; 
+            margin: 15px 0; 
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+        code { 
+            background: #e0e0e0; 
+            padding: 2px 5px; 
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .status {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .footer {
+            color: #666; 
+            margin-top: 30px; 
+            font-size: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔋 小哈电池 API 中转服务</h1>
+        <p>该服务为小哈电池小组件提供 API 中转功能。</p>
+        
+        <div class="status">
+            ✅ 服务运行中 | 版本 1.0.0
+        </div>
+        
+        <h2>API 端点</h2>
+        
+        <div class="api">
+            <h3>POST /preparams?batteryNo=xxx</h3>
+            <p>获取预处理参数</p>
+            <strong>请求头:</strong><br>
+            <code>Content-Type: text/plain</code><br><br>
+            <strong>请求体:</strong> token字符串<br><br>
+            <strong>示例:</strong><br>
+            <code>curl -X POST https://d.sosun.cc/preparams?batteryNo=8895016218 \<br>
+  -H "Content-Type: text/plain" \<br>
+  -d "your-token-here"</code>
+        </div>
+        
+        <div class="api">
+            <h3>POST /decode</h3>
+            <p>解码电池数据</p>
+            <strong>请求头:</strong><br>
+            <code>Content-Type: application/octet-stream</code><br><br>
+            <strong>请求体:</strong> 加密的二进制数据
+        </div>
+        
+        <div class="api">
+            <h3>GET /health</h3>
+            <p>健康检查</p>
+            <strong>响应:</strong><br>
+            <code>{ "status": "healthy" }</code>
+        </div>
+        
+        <div class="footer">
+            <p>Powered by 小哈电池 | v1.0.0</p>
+            <p><a href="https://github.com/bestK/xiaoha-battery-widget" target="_blank">GitHub 仓库</a></p>
+        </div>
+    </div>
+</body>
+</html>
