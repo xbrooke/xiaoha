@@ -52,7 +52,10 @@ app.post('/preparams', async (req, res) => {
         );
 
         console.log('[preparams] 成功获取预处理参数');
-        res.json(response.data);
+        res.json({
+            code: 200,
+            data: response.data
+        });
     } catch (error) {
         console.error('[preparams] 错误:', error.message);
         res.status(500).json({
